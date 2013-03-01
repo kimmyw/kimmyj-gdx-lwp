@@ -1,0 +1,53 @@
+<project name="gdx-lw" default="all" basedir=".">
+	<description>libgdx live wallpaper distribution build file</description>
+
+	<!-- libgdx version -->
+	<property name="version" value="0.1" />
+
+	<!-- output directory for distribution -->
+	<property name="dist" value="dist" />
+
+	<target name="ver">
+		<echo>${version}</echo>
+	</target>
+	
+	<!-- clean output directories -->	
+	<target name="clean">		
+		<!-- <delete dir="/bin" />	-->
+	</target>
+
+	<!-- init task, creates all necessary directories -->
+	<target name="init" depends="clean">
+		<mkdir dir="bin" />
+	</target>
+
+	<!-- compiles the java code of all modules -->
+	<target name="compile" depends="init">
+
+		<!-- build android backend -->
+		<javac debug="on" srcdir="src" destdir="bin">
+			<classpath>
+				<fileset file="lib/*.jar" />
+			</classpath>
+		</javac>
+		
+	</target>
+	
+	<!-- creates jars and places other files in the output dir -->
+	<target name="package" depends="compile">
+		<jar destfile="${dist}/gdx-backend-android-lw-sources.jar" basedir="src" />
+		<jar destfile="${dist}/gdx-backend-android-lw.jar" basedir="bin" />
+	</target>
+
+	<!-- builds the distribution zip -->
+	
+	
+	<target name="dist" depends="compile,package">
+		<zip destfile="libgdx-lw-${version}.zip" basedir="${dist}"/>
+	</target>
+
+	<target name="all" depends="compile,package">
+		<zip destfile="libgdx-lw-${version}.zip" basedir="${dist}"/>
+	</target>
+	
+</project>
